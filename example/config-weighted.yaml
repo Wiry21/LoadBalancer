@@ -1,0 +1,12 @@
+# Sample of the simplest configuration you can write
+services:
+  - name: service1
+    strategy: WeightedRoundRobin
+    matcher: "/"
+    replicas:
+      - url: "http://127.0.0.1:8083"
+        metadata:
+          weight: 8
+      - url: "http://127.0.0.1:8082"
+        metadata:
+          weight: 4

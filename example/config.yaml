@@ -1,0 +1,9 @@
+# Sample of the simplest configuration you can write
+services:
+  - name: service01
+    strategy: RoundRobin
+    matcher: "/"
+    replicas:
+    - url: "http://127.0.0.1:8083"
+    - url: "http://127.0.0.1:8082"
+strategy: RoundRobin

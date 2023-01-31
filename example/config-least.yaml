@@ -1,0 +1,12 @@
+# Sample of the simplest configuration you can write
+services:
+  - name: service02
+    strategy: LeastConnections
+    matcher: "/"
+    replicas:
+      - url: "http://127.0.0.1:8082"
+      - url: "http://127.0.0.1:8083"
+      - url: "http://127.0.0.1:8084"
+      - url: "http://127.0.0.1:8085"
+      - url: "http://127.0.0.1:8086"
+strategy: LeastConnections

@@ -1,9 +1,9 @@
 package main
 
 import (
-	"fmt"
-	"github.com/go-resty/resty/v2"
 	"sync"
+
+	"github.com/go-resty/resty/v2"
 )
 
 func main() {
@@ -24,15 +24,8 @@ func heartBeat() {
 		//Create a Resty Client
 		client := resty.New()
 
-		resp, err := client.R().
+		_, _ = client.R().
 			EnableTrace().
-			Get("http://localhost:8080")
-
-		//Explore response object
-		if resp.StatusCode() != 200 {
-			fmt.Println("Response Info:")
-			fmt.Println("  Error      :", err)
-			fmt.Println("  Status Code:", resp.StatusCode())
-		}
+			Get("http://host.docker.internal:8080")
 	}
 }

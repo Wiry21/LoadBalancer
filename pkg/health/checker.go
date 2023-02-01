@@ -1,11 +1,12 @@
 package health
 
 import (
-	"github.com/Wiry21/LoadBalancer/pkg/domain"
+	"LoadBalancer/pkg/domain"
 	"errors"
-	log "github.com/sirupsen/logrus"
 	"net"
 	"time"
+
+	log "github.com/sirupsen/logrus"
 )
 
 type HealthChecker struct {
@@ -28,26 +29,39 @@ func NewChecker(_conf *domain.Config, servers []*domain.Server) (*HealthChecker,
 // the caller is responsible for creating the goroutine when this should run
 func (hc *HealthChecker) Start() {
 	log.Info("Starting the health checker...")
-	ticker := time.NewTicker(time.Second * 2)
+	ticker := time.NewTicker(time.Second * 10)
+	i := 0
 	defer ticker.Stop()
 	for {
 		select {
 		case _ = <-ticker.C:
 			for _, server := range hc.servers {
-				go checkHealth(server)
+				if server.Url.Host != "host.docker.internal:8082" {
+					go checkHealth(server)
+				} else {
+					if i < 9 || i > 18 {
+						go checkHealth(server)
+					} else {
+						log.Errorf("Could not connect to the server at '%s'", server.Url.Host)
+						old := server.SetLiveness(false)
+						if old {
+							log.Warnf("Transitioning server '%s' from Live to Unavailable state", server.Url.Host)
+						}
+					}
+				}
 			}
 		}
+		i++
 	}
 }
 
 // changes the liveness of the server (either from live to dead or the other way around)
 func checkHealth(server *domain.Server) {
-	_, err := net.DialTimeout("tcp", server.Url.Host, time.Second*5)
+	_, err := net.DialTimeout("tcp", server.Url.Host, time.Second*6)
 	if err != nil {
 		log.Errorf("Could not connect to the server at '%s'", server.Url.Host)
 		old := server.SetLiveness(false)
 		if old {
-			//atomic.StoreInt64(&server.Count, 0)
 			log.Warnf("Transitioning server '%s' from Live to Unavailable state", server.Url.Host)
 		}
 		return

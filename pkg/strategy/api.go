@@ -1,11 +1,12 @@
 package strategy
 
 import (
-	"github.com/Wiry21/LoadBalancer/pkg/domain"
+	"LoadBalancer/pkg/domain"
 	"errors"
 	"fmt"
-	log "github.com/sirupsen/logrus"
 	"sync"
+
+	log "github.com/sirupsen/logrus"
 )
 
 // Known load balancing strategies, each entry in this block should correspond

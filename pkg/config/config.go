@@ -1,9 +1,9 @@
 package config
 
 import (
-	"github.com/Wiry21/LoadBalancer/pkg/domain"
-	"github.com/Wiry21/LoadBalancer/pkg/health"
-	"github.com/Wiry21/LoadBalancer/pkg/strategy"
+	"LoadBalancer/pkg/domain"
+	"LoadBalancer/pkg/health"
+	"LoadBalancer/pkg/strategy"
 )
 
 // Config is a representation of the configuration

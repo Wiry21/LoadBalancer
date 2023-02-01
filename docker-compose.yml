@@ -1,0 +1,88 @@
+version: "4.7"
+
+services:
+  loadbalancer:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    networks:
+      - backend
+    ports:
+      - 8080:8080
+    command: sh -c "sleep 2 && go run /app/main.go -config-path ./example/config-least.yaml"
+
+  service1:
+    container_name: service1
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    networks:
+      - backend
+    ports:
+      - 8082:8082
+    command: sh -c "sleep 5 && go run /app/server/demoserver.go -port 8082"
+
+  service2:
+    container_name: service2
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    networks:
+      - backend
+    ports:
+      - 8083:8083
+    command: sh -c "sleep 6 && go run /app/server/demoserver.go -port 8083"
+
+  service3:
+    container_name: service3
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    networks:
+      - backend
+    ports:
+      - 8084:8084
+    command: sh -c "sleep 7 && go run /app/server/demoserver.go -port 8084"
+
+  service4:
+    container_name: service4
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    networks:
+      - backend
+    ports:
+      - 8085:8085
+    command: sh -c "sleep 8 && go run /app/server/demoserver.go -port 8085"
+
+  service5:
+    container_name: service5
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    networks:
+      - backend
+    ports:
+      - 8086:8086
+    command: sh -c "sleep 9 && go run /app/server/demoserver.go -port 8086"
+
+  client:
+    container_name: client
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    networks:
+      - backend
+    ports:
+      - 8087:8087
+    command: sh -c "sleep 22 && go run /app/client/client.go"
+
+networks:
+  backend:

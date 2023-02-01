@@ -1,20 +1,21 @@
 package main
 
 import (
-	"github.com/Wiry21/LoadBalancer/pkg/domain"
-	"github.com/Wiry21/LoadBalancer/pkg/health"
-	"github.com/Wiry21/LoadBalancer/pkg/strategy"
+	"LoadBalancer/pkg/domain"
+	"LoadBalancer/pkg/health"
+	"LoadBalancer/pkg/strategy"
 	"errors"
 	"flag"
 	"fmt"
-	log "github.com/sirupsen/logrus"
 	"net/http"
 	"net/http/httputil"
 	"net/url"
 	"os"
 	"strings"
 
-	"github.com/Wiry21/LoadBalancer/pkg/config"
+	log "github.com/sirupsen/logrus"
+
+	"LoadBalancer/pkg/config"
 )
 
 var (
@@ -101,8 +102,8 @@ func (b *Balancer) ServeHTTP(res http.ResponseWriter, req *http.Request) {
 		return
 	}
 	next.Proxy.ModifyResponse = func(res *http.Response) error {
-		if res.StatusCode >= 500 {
-			return errors.New("500 error from the host")
+		if res.StatusCode != 200 {
+			return errors.New("not 200 status code from the host")
 		}
 		return nil
 	}

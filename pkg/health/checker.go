@@ -36,7 +36,7 @@ func (hc *HealthChecker) Start() {
 		select {
 		case _ = <-ticker.C:
 			for _, server := range hc.servers {
-				if server.Url.Host != "host.docker.internal:8082" {
+				if server.Url.Host != "172.17.0.1:8082" {
 					go checkHealth(server)
 				} else {
 					if i < 9 || i > 18 {

@@ -26,6 +26,6 @@ func heartBeat() {
 
 		_, _ = client.R().
 			EnableTrace().
-			Get("http://host.docker.internal:8080")
+			Get("http://172.17.0.1:8080")
 	}
 }

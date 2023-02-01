@@ -73,10 +73,8 @@ func NewBalancer(conf *config.Config) *Balancer {
 // Looks for the first server list that matches the reqPath (i.e. matcher)
 // Will return an error if no matcher have been found.
 func (b *Balancer) findServiceList(reqPath string) (*config.ServerList, error) {
-	//log.Infof("Trying to find matcher for request '%s'", reqPath)
 	for matcher, s := range b.ServerList {
 		if strings.HasPrefix(reqPath, matcher) {
-			//log.Infof("Found service '%s' matching the request", s.Name)
 			return s, nil
 		}
 	}
@@ -88,7 +86,6 @@ func (b *Balancer) ServeHTTP(res http.ResponseWriter, req *http.Request) {
 	// read the request path, say host:port/service/rest/of/url this should
 	// be load balanced against service named "service" and url will be
 	// "host{i}:port{i}/rest/of/url
-	//log.Infof("Received new request: url='%s'", req.Host)
 	sl, err := b.findServiceList(req.URL.Path)
 	if err != nil {
 		log.Error(err)
@@ -111,7 +108,6 @@ func (b *Balancer) ServeHTTP(res http.ResponseWriter, req *http.Request) {
 		fmt.Println(err)
 		b.ServeHTTP(res, req)
 	}
-	//log.Infof("Forwarding to the server number='%s'", next.Url.Host)
 	next.Forward(res, req)
 }
 

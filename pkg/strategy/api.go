@@ -173,7 +173,6 @@ func (r *LeastConnections) Next(servers []*domain.Server) (*domain.Server, error
 		log.Error("All server are down")
 		return nil, errors.New(fmt.Sprintf("Checked all the '%d' servers, none of them are available", seen))
 	}
-	//log.Infof("Strategy picked server '%s'", picked.Url.Host)
 	return picked, nil
 }
 

@@ -14,7 +14,6 @@ var port = flag.Int("port", 8082, "Port to start the demo service on")
 type DemoServer struct{}
 
 func (f *DemoServer) ServeHTTP(res http.ResponseWriter, req *http.Request) {
-	// log.Info("Received new request: url='%s'", req.Host)
 	time.Sleep(time.Second * 1)
 	res.WriteHeader(200)
 	res.Write([]byte(fmt.Sprintf("All good! from server %d.", *port)))
